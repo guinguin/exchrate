@@ -1,0 +1,25 @@
+name: Fetch and Update Exchange Rate
+
+on:
+  schedule:
+    # Runs at 00:00 UTC every day
+    - cron: '5 0 * * *'
+
+jobs:
+  update-file:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Fetch data from API
+        run: |
+          curl 'https://v6.exchangerate-api.com/v6/93315829e958c3a4a06044ed/latest/USD' > latest_usd.yaml
+
+      - name: Commit and push file
+        run: |
+          git config --global user.name "guinguin"
+          git config --global user.email "imbauser@gmail.com"
+          git add latest_usd.yaml
+          git commit -m "chore: Update latest USD exchange rates" || exit 0
+          git push
