@@ -3,7 +3,7 @@ name: Fetch and Update Exchange Rate
 on:
   schedule:
     # Runs at 00:00 UTC every day
-    - cron: '5 0 * * *'
+    - cron: '1 0 * * *'
   workflow_dispatch:
 
 jobs:
