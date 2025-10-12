@@ -1,0 +1,35 @@
+name: Fetch and Update Exchange Rate - EUR
+
+on:
+  schedule:
+    # Runs at 00:01 UTC and 12:01 UTC every day
+    - cron: '1 0 * * *'  # Runs at 00:01 UTC every day
+    - cron: '1 12 * * *' # Runs at 12:01 UTC every day
+  workflow_dispatch:
+
+jobs:
+  update-file:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Fetch data from API
+        # The new API call is used, and output is redirected to latest_eur.json
+        run: |
+          curl 'https://api.exchangeratesapi.io/v1/latest?access_key=92c27b54044bea4049107c993baa16ce&format=1' > latest_eur.json
+
+      - name: Commit and push file
+        run: |
+          # Configure Git user details
+          git config --global user.name "guinguin"
+          git config --global user.email "imbauser@gmail.com"
+          
+          # Add the new file name
+          git add latest_eur.json
+          
+          # Commit only if there are changes (|| exit 0 prevents failure if no changes)
+          git commit -m "chore: Update latest EUR exchange rates" || exit 0
+          
+          # Push the changes
+          git push
