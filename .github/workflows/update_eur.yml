@@ -1,7 +1,7 @@
 name: Fetch and Update Exchange Rate - EUR
 
 on:
-  schedule:
+  # schedule:
     # Runs at 00:01 UTC and 12:01 UTC every day
     #- cron: '1 0 * * *'  # Runs at 00:01 UTC every day
     #- cron: '1 12 * * *' # Runs at 12:01 UTC every day
